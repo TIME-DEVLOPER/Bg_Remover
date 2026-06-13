@@ -2,10 +2,16 @@
 from flask_cors import CORS
 from rembg import remove
 from PIL import Image
+from dotenv import load_dotenv
 import io
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
+PORT = int(os.getenv("PORT", 5000))
 
 @app.route('/remove-bg', methods=['POST'])
 def remove_bg():
@@ -18,4 +24,4 @@ def remove_bg():
     )
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    app.run(host="0.0.0.0", port=PORT)
