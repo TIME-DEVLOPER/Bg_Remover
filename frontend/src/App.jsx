@@ -6,6 +6,8 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const apiBase = import.meta.env.VITE_API_URL || "";
+
   const handleImage = (e) => {
     const selected = e.target.files[0];
 
@@ -28,13 +30,14 @@ export default function App() {
       const formData = new FormData();
       formData.append("image", file);
 
-      const response = await fetch(
-        "http://localhost:5000/remove-bg",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${apiBase}/remove-bg`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
 
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
@@ -51,7 +54,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-linear-to-br from-violet-600 via-purple-600 to-pink-500 flex items-center justify-center p-3 sm:p-5">
       <div className="w-full max-w-2xl bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl">
-
         <h1 className="text-2xl sm:text-4xl font-bold text-center text-white">
           Background Remover
         </h1>
@@ -74,16 +76,12 @@ export default function App() {
             Choose Image
           </h3>
 
-          <p className="text-white/60 text-sm">
-            JPG, PNG, WEBP
-          </p>
+          <p className="text-white/60 text-sm">JPG, PNG, WEBP</p>
         </label>
 
         {preview && (
           <div className="mt-6">
-            <h2 className="text-white font-semibold mb-2">
-              Original Image
-            </h2>
+            <h2 className="text-white font-semibold mb-2">Original Image</h2>
 
             <img
               src={preview}
@@ -103,9 +101,7 @@ export default function App() {
 
         {result && (
           <div className="mt-8">
-            <h2 className="text-white font-semibold mb-2">
-              Result
-            </h2>
+            <h2 className="text-white font-semibold mb-2">Result</h2>
 
             <img
               src={result}
