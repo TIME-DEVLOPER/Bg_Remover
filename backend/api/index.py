@@ -4,7 +4,7 @@ from rembg import remove
 import io
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://bg-remover-nine-delta.vercel.app"])
 
 @app.route('/remove-bg', methods=['POST'])
 def remove_bg():
