@@ -5,3 +5,4 @@ Pillow==12.2.0
 numpy==2.4.6
 onnxruntime==1.26.0
 python-dotenv==1.1.0
+gunicorn==26.0.0
